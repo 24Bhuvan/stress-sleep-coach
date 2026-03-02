@@ -1,0 +1,110 @@
+Gender,Age,Occupation,Sleep Duration,Physical Activity Level,BMI Category,Stress Level,Quality of Sleep
+Male,27,Software Engineer,6.1,42,Overweight,6,6
+Male,28,Doctor,6.2,60,Normal,8,6
+Male,28,Sales Representative,5.9,30,Obese,8,4
+Male,28,Software Engineer,5.9,30,Obese,8,4
+Male,29,Teacher,6.3,40,Obese,7,6
+Male,29,Doctor,7.8,75,Normal,6,7
+Male,29,Doctor,6.1,30,Normal,8,6
+Male,29,Doctor,6.0,30,Normal,8,6
+Female,29,Nurse,6.5,40,Normal Weight,7,5
+Male,30,Doctor,7.6,75,Normal,6,7
+Male,30,Doctor,7.7,75,Normal,6,7
+Male,30,Doctor,7.8,75,Normal,6,7
+Male,30,Doctor,7.9,75,Normal,6,7
+Female,30,Nurse,6.4,35,Normal Weight,7,5
+Female,31,Nurse,7.9,75,Normal Weight,4,8
+Male,31,Doctor,6.1,30,Normal,8,6
+Male,31,Doctor,7.7,75,Normal,6,7
+Male,31,Doctor,7.6,75,Normal,6,7
+Male,31,Doctor,7.8,75,Normal,6,7
+Male,32,Engineer,7.5,45,Normal,3,8
+Male,32,Doctor,6.0,30,Normal,8,6
+Male,32,Doctor,7.6,75,Normal,6,7
+Male,32,Doctor,7.7,75,Normal,6,7
+Male,32,Doctor,6.2,30,Normal,8,6
+Male,32,Accountant,7.2,50,Normal Weight,6,8
+Male,33,Doctor,6.0,30,Normal,8,6
+Female,33,Scientist,6.2,50,Overweight,6,6
+Male,33,Doctor,6.1,30,Normal,8,6
+Female,34,Scientist,5.8,32,Overweight,8,4
+Male,35,Teacher,6.7,40,Overweight,5,7
+Male,35,Software Engineer,7.5,60,Normal Weight,5,8
+Female,35,Accountant,7.2,60,Normal,4,8
+Male,35,Engineer,7.2,60,Normal,4,8
+Male,35,Engineer,7.3,60,Normal,4,8
+Male,35,Lawyer,7.4,60,Obese,5,7
+Female,36,Accountant,7.2,60,Normal,4,8
+Female,36,Accountant,7.1,60,Normal,4,8
+Female,36,Teacher,7.1,60,Normal,4,8
+Female,36,Teacher,7.2,60,Normal,4,8
+Male,36,Teacher,6.6,35,Overweight,7,5
+Female,37,Nurse,6.1,42,Overweight,6,6
+Male,37,Engineer,7.8,70,Normal Weight,4,8
+Male,37,Lawyer,7.4,60,Normal,5,8
+Female,37,Accountant,7.2,60,Normal,4,8
+Female,37,Nurse,7.5,60,Normal Weight,4,8
+Male,38,Lawyer,7.3,60,Normal,5,8
+Female,38,Accountant,7.1,60,Normal,4,8
+Male,38,Lawyer,7.1,60,Normal,5,8
+Female,38,Lawyer,7.4,60,Obese,5,7
+Male,39,Lawyer,7.2,60,Normal,5,8
+Male,39,Engineer,6.5,40,Overweight,7,5
+Female,39,Lawyer,6.9,50,Normal Weight,6,7
+Female,39,Accountant,8.0,80,Normal Weight,3,9
+Female,40,Accountant,7.2,55,Normal Weight,6,8
+Male,40,Lawyer,7.9,90,Normal,5,8
+Male,41,Lawyer,7.6,90,Normal,5,8
+Male,41,Engineer,7.3,70,Normal Weight,6,8
+Male,41,Lawyer,7.1,55,Overweight,6,7
+Male,41,Lawyer,7.7,90,Normal,5,8
+Male,42,Salesperson,6.5,45,Overweight,7,6
+Male,42,Lawyer,7.8,90,Normal,5,8
+Female,42,Teacher,6.8,45,Overweight,7,6
+Female,43,Teacher,6.7,45,Overweight,4,7
+Male,43,Salesperson,6.3,45,Overweight,7,6
+Male,43,Salesperson,6.5,45,Overweight,7,6
+Male,43,Salesperson,6.4,45,Overweight,7,6
+Male,43,Engineer,7.8,90,Normal,5,8
+Male,43,Engineer,6.9,47,Normal Weight,7,6
+Male,43,Engineer,7.6,75,Overweight,4,8
+Male,43,Engineer,7.7,90,Normal,5,8
+Female,44,Teacher,6.6,45,Overweight,4,7
+Male,44,Salesperson,6.4,45,Overweight,7,6
+Male,44,Salesperson,6.3,45,Overweight,7,6
+Female,44,Teacher,6.5,45,Overweight,4,7
+Male,44,Engineer,6.8,45,Overweight,7,7
+Male,44,Salesperson,6.5,45,Overweight,7,6
+Female,45,Teacher,6.8,30,Overweight,6,7
+Female,45,Teacher,6.5,45,Overweight,4,7
+Female,45,Teacher,6.6,45,Overweight,4,7
+Female,45,Manager,6.9,55,Overweight,5,7
+Male,48,Doctor,7.3,65,Obese,5,7
+Female,48,Nurse,5.9,90,Overweight,8,6
+Female,49,Nurse,6.2,90,Overweight,8,6
+Female,49,Nurse,6.0,90,Overweight,8,6
+Female,49,Nurse,6.1,90,Overweight,8,6
+Male,49,Doctor,8.1,85,Obese,3,9
+Female,50,Nurse,6.1,90,Overweight,8,6
+Female,50,Engineer,8.3,30,Normal,3,9
+Female,50,Nurse,6.0,90,Overweight,8,6
+Female,51,Engineer,8.5,30,Normal,3,9
+Female,51,Nurse,7.1,55,Normal Weight,6,7
+Female,51,Nurse,6.0,90,Overweight,8,6
+Female,51,Nurse,6.1,90,Overweight,8,6
+Female,52,Accountant,6.5,45,Overweight,7,7
+Female,52,Accountant,6.6,45,Overweight,7,7
+Female,52,Engineer,8.4,30,Normal,3,9
+Female,53,Engineer,8.3,30,Normal,3,9
+Female,53,Engineer,8.5,30,Normal,3,9
+Female,53,Engineer,8.4,30,Normal,3,9
+Female,54,Engineer,8.4,30,Normal,3,9
+Female,54,Engineer,8.5,30,Normal,3,9
+Female,55,Nurse,8.1,75,Overweight,4,9
+Female,56,Doctor,8.2,90,Normal Weight,3,9
+Female,57,Nurse,8.1,75,Overweight,3,9
+Female,57,Nurse,8.2,75,Overweight,3,9
+Female,58,Nurse,8.0,75,Overweight,3,9
+Female,59,Nurse,8.0,75,Overweight,3,9
+Female,59,Nurse,8.1,75,Overweight,3,9
+Female,59,Nurse,8.2,75,Overweight,3,9

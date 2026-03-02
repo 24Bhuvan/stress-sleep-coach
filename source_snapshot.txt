@@ -1,0 +1,299 @@
+
+
+===== ./app.py =====
+
+import streamlit as st
+import pandas as pd
+import joblib
+
+from utils.rules import get_stress_tip, get_sleep_tip
+
+MODEL_PATH = "model.pkl"
+
+
+# -----------------------------
+# Load model (cached)
+# -----------------------------
+@st.cache_resource
+def load_models():
+    return joblib.load(MODEL_PATH)
+
+
+models = load_models()
+stress_model = models["stress_model"]
+sleep_model = models["sleep_model"]
+
+
+# -----------------------------
+# Page Config
+# -----------------------------
+st.set_page_config(page_title="Stress & Sleep Coach", layout="centered")
+st.title("Stress & Sleep Coach Bot")
+
+st.header("Enter Your Details")
+
+gender = st.selectbox("Gender", ["Male", "Female"])
+
+age = st.number_input("Age", min_value=18, max_value=80, value=30)
+
+occupation = st.selectbox(
+    "Occupation",
+    [
+        "Software Engineer", "Doctor", "Sales Representative",
+        "Teacher", "Engineer", "Accountant",
+        "Scientist", "Lawyer", "Nurse",
+        "Salesperson", "Manager"
+    ],
+)
+
+sleep_duration = st.number_input(
+    "Sleep Duration (hours)", min_value=3.0, max_value=12.0, value=7.0
+)
+
+physical_activity = st.number_input(
+    "Physical Activity Level", min_value=0, max_value=100, value=50
+)
+
+bmi_category = st.selectbox(
+    "BMI Category",
+    ["Normal", "Normal Weight", "Overweight", "Obese"]
+)
+
+
+# -----------------------------
+# Prediction
+# -----------------------------
+if st.button("Predict"):
+
+    input_df = pd.DataFrame(
+        {
+            "Gender": [gender],
+            "Age": [age],
+            "Occupation": [occupation],
+            "Sleep Duration": [sleep_duration],
+            "Physical Activity Level": [physical_activity],
+            "BMI Category": [bmi_category],
+        }
+    )
+
+    stress_pred = stress_model.predict(input_df)[0]
+    sleep_pred = sleep_model.predict(input_df)[0]
+
+    st.subheader("Prediction Results")
+    st.write(f"Stress Level: **{stress_pred}**")
+    st.write(f"Sleep Quality: **{sleep_pred}**")
+
+    st.subheader("Recommendations")
+    st.write(get_stress_tip(stress_pred))
+    st.write(get_sleep_tip(sleep_pred))
+
+===== ./clean.py =====
+
+import pandas as pd
+
+INPUT_FILE = "Sleep_health_and_lifestyle_dataset.csv"
+OUTPUT_FILE = "data.csv"
+
+def main():
+    df = pd.read_csv(INPUT_FILE)
+
+    df = df[
+        [
+            "Gender",
+            "Age",
+            "Occupation",
+            "Sleep Duration",
+            "Physical Activity Level",
+            "BMI Category",
+            "Stress Level",
+            "Quality of Sleep",
+        ]
+    ]
+
+    df = df.drop_duplicates()
+    df = df.dropna()
+
+    df.to_csv(OUTPUT_FILE, index=False)
+    print("Cleaned data saved as data.csv")
+
+if __name__ == "__main__":
+    main()
+
+===== ./model_predict.py =====
+
+
+
+===== ./model_train.py =====
+
+import joblib
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn.pipeline import Pipeline
+
+from utils.preprocessing import load_data, create_targets
+
+
+DATA_PATH = "data.csv"
+MODEL_PATH = "model.pkl"
+
+
+def main():
+    # -----------------------
+    # Load + Prepare Data
+    # -----------------------
+    df = load_data(DATA_PATH)
+    df = create_targets(df)
+
+    feature_cols = [
+        "Gender",
+        "Age",
+        "Occupation",
+        "Sleep Duration",
+        "Physical Activity Level",
+        "BMI Category",
+    ]
+
+    X = df[feature_cols]
+    y_stress = df["Stress_Class"]
+    y_sleep = df["Sleep_Class"]
+
+    categorical_cols = ["Gender", "Occupation", "BMI Category"]
+    numeric_cols = ["Age", "Sleep Duration", "Physical Activity Level"]
+
+    # -----------------------
+    # Preprocessing Pipeline
+    # -----------------------
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_cols),
+            ("num", StandardScaler(), numeric_cols),
+        ]
+    )
+
+    # -----------------------
+    # Build Pipelines
+    # -----------------------
+    stress_pipeline = Pipeline(
+        steps=[
+            ("preprocessor", preprocessor),
+            ("classifier", LogisticRegression(max_iter=1000, class_weight="balanced")),
+        ]
+    )
+
+    sleep_pipeline = Pipeline(
+        steps=[
+            ("preprocessor", preprocessor),
+            ("classifier", LogisticRegression(max_iter=1000, class_weight="balanced")),
+        ]
+    )
+
+    # -----------------------
+    # Train-Test Split (Stratified)
+    # -----------------------
+    X_train, X_test, y_stress_train, y_stress_test = train_test_split(
+        X, y_stress, test_size=0.2, random_state=42, stratify=y_stress
+    )
+
+    X_train2, X_test2, y_sleep_train, y_sleep_test = train_test_split(
+        X, y_sleep, test_size=0.2, random_state=42, stratify=y_sleep
+    )
+
+    # -----------------------
+    # Train
+    # -----------------------
+    stress_pipeline.fit(X_train, y_stress_train)
+    sleep_pipeline.fit(X_train2, y_sleep_train)
+
+    # -----------------------
+    # Evaluate
+    # -----------------------
+    stress_preds = stress_pipeline.predict(X_test)
+    sleep_preds = sleep_pipeline.predict(X_test2)
+
+    print(f"Stress Model Accuracy: {accuracy_score(y_stress_test, stress_preds):.2f}")
+    print(f"Sleep Model Accuracy: {accuracy_score(y_sleep_test, sleep_preds):.2f}")
+
+    # -----------------------
+    # Save full pipelines
+    # -----------------------
+    joblib.dump(
+        {
+            "stress_model": stress_pipeline,
+            "sleep_model": sleep_pipeline,
+        },
+        MODEL_PATH,
+    )
+
+    print("Models saved as model.pkl")
+
+
+if __name__ == "__main__":
+    main()
+
+===== ./utils/preprocessing.py =====
+
+import pandas as pd
+
+
+# ------------------------------
+# Load dataset
+# ------------------------------
+def load_data(path: str) -> pd.DataFrame:
+    return pd.read_csv(path)
+
+
+# ------------------------------
+# Target binning only
+# ------------------------------
+def create_targets(df: pd.DataFrame):
+    def bin_stress(x):
+        if x <= 4:
+            return "Low"
+        elif x <= 7:
+            return "Medium"
+        else:
+            return "High"
+
+    def bin_sleep(x):
+        return "Poor" if x <= 5 else "Good"
+
+    df["Stress_Class"] = df["Stress Level"].apply(bin_stress)
+    df["Sleep_Class"] = df["Quality of Sleep"].apply(bin_sleep)
+
+    return df
+
+===== ./utils/rules.py =====
+
+# ----------------------------------
+# Stress & Sleep Recommendation Rules
+# ----------------------------------
+
+def get_stress_tip(stress_level: str) -> str:
+    if stress_level == "Low":
+        return "Your stress level is low. Maintain your routine and continue regular physical activity."
+
+    elif stress_level == "Medium":
+        return "Your stress level is moderate. Consider short breaks, light exercise, and structured daily planning."
+
+    elif stress_level == "High":
+        return "Your stress level is high. Practice deep breathing, reduce workload where possible, and prioritize rest."
+
+    else:
+        return "Stress level unavailable."
+
+
+def get_sleep_tip(sleep_quality: str) -> str:
+    if sleep_quality == "Good":
+        return "Your sleep quality is good. Maintain a consistent bedtime and healthy lifestyle habits."
+
+    elif sleep_quality == "Poor":
+        return "Your sleep quality is poor. Reduce screen time before bed and aim for 7–8 hours of sleep."
+
+    else:
+        return "Sleep quality unavailable."
+
+===== ./utils/__init__.py =====
+
