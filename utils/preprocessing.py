@@ -26,4 +26,5 @@ def create_targets(df: pd.DataFrame):
     df["Stress_Class"] = df["Stress Level"].apply(bin_stress)
     df["Sleep_Class"] = df["Quality of Sleep"].apply(bin_sleep)
 
+
     return df
